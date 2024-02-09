@@ -38,12 +38,12 @@ export const POST: APIRoute = async ({ request }) => {
     folder: "pdf",
   });
 
-  const { asset_id: id, url, pages } = result;
+  const { asset_id: id, secure_url: url, pages } = result;
 
   return new Response(
     JSON.stringify({
       id,
-      secure_url: url,
+      url,
       pages,
     })
   );
