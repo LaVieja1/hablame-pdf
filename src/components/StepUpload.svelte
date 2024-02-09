@@ -33,9 +33,8 @@
         return;
       }
 
-      const result = await res.json();
-      console.log(result);
-      setAppStatusChatMode(result);
+      const { id, url, pages } = await res.json();
+      setAppStatusChatMode({ id, url, pages });
     }
   }
 </script>
