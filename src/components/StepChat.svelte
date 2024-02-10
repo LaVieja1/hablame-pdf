@@ -76,7 +76,7 @@
 {/if}
 
 {#if answer}
-  <div class="mt-8">
+  <div class="mt-4">
     <p class="font-medium">Respuesta:</p>
     <p>{answer}</p>
   </div>
