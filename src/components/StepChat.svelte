@@ -19,29 +19,30 @@
     event.preventDefault();
 
     loading = true;
+    answer = "";
 
     const question = event.target.question.value;
 
+    const searchParams = new URLSearchParams();
+    searchParams.append("id", id);
+    searchParams.append("question", question);
+
     try {
-      const res = await fetch("/api/ask", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          id,
-          question: "De qué trata este PDF?",
-        }),
-      });
+      const eventSource = new EventSource(
+        `/api/ask?${searchParams.toString()}`
+      );
 
-      if (!res.ok) {
+      eventSource.onmessage = (event) => {
         loading = false;
-        console.error("Error en la llamada a la API");
-        return;
-      }
+        const incomingData = JSON.parse(event.data);
 
-      const { answer: apiAnswer } = await res.json();
-      answer = apiAnswer;
+        if (incomingData === "__END__") {
+          eventSource.close();
+          return;
+        }
+
+        answer += incomingData;
+      };
     } catch (e) {
       setAppStatusError();
     } finally {
@@ -68,7 +69,7 @@
 </form>
 
 {#if loading}
-  <div class="flex justify-center items-center flex-col gap-y-2">
+  <div class="mt-8 flex justify-center items-center flex-col gap-y-2">
     <Spinner color="purple" />
     <p class="opacity-75">Esperando respuesta...</p>
   </div>
