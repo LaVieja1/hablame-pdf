@@ -78,6 +78,6 @@
 {#if answer}
   <div class="mt-4">
     <p class="font-medium">Respuesta:</p>
-    <p>{answer}</p>
+    <p class="max-h-96 overflow-auto">{answer}</p>
   </div>
 {/if}
